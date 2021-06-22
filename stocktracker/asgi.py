@@ -8,9 +8,20 @@ https://docs.djangoproject.com/en/3.2/howto/deployment/asgi/
 """
 
 import os
+from mainapp.routing import websocket_urlpatterns
 
+from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
+from channels.auth import AuthMiddlewareStack
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stocktracker.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 
-application = get_asgi_application()
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    # Just HTTP for now. (We can add other protocols later.)
+    "websocket": AuthMiddlewareStack(
+        URLRouter(
+            websocket_urlpatterns
+        )
+    ),
+})

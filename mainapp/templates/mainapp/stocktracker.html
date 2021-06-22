@@ -55,6 +55,24 @@
         </tbody>
     </table>
 </div>
+{{ room_name|json_script:"room-name" }}
+<script>
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
+    var queryString = window.location.search;
+    queryString = queryString.substring(1)
+    console.log(queryString)
+
+    const stockSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/stock/'
+        + roomName
+        + '/'
+        + '?'
+        + queryString
+    );
+
+</script>
 {% endblock %}
 
 {% block script %} {% endblock %}

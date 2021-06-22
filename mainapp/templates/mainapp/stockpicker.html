@@ -1,31 +1,26 @@
-{% extends 'mainapp/basic.html' %}
-{% load static %}
-
-{% block title %}
+{% extends 'mainapp/basic.html' %} {% load static %} {% block title %}
 <title>Stockpicker</title>
-{% endblock %}
-
-{% block style %} {% endblock %}
-
-{% block body %}
+{% endblock %} {% block style %} {% endblock %} {% block body %}
 <div class="container">
-    <h3 class="mt-3">Live Stock Tracker</h3>
-    <form action="/stocktracker">
-        {% csrf_token %}
-        <div class="mt-3">
-            <label class="form-label" for="select">Select Stocks:</label>
-            <select class="form-select form-select-lg" multiple id="select" size="10" name="stockpicker">
-                {% for i in stocks %}
-                <option value={{i}}>{{i}}</option>
-                {% endfor %}    
-            </select>
-        </div>
-        <div class="d-grid gap-2 mt-3">
-            <button class="btn btn-primary" type="submit">Submit</button>
-        </div>
-    </form>
+  <h3 class="mt-3">Live Stock Tracker</h3>
+  <form action="/stocktracker">
+    <div class="mt-3">
+      <label class="form-label" for="select">Select Stocks:</label>
+      <select
+        class="form-select form-select-lg"
+        multiple
+        id="select"
+        size="10"
+        name="stockpicker"
+      >
+        {% for i in stocks %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="d-grid gap-2 mt-3">
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+  </form>
 </div>
-{% endblock %}
-
-{% block script %}
-{% endblock %}
+{% endblock %} {% block script %} {% endblock %}

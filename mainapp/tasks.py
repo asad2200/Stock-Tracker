@@ -1,25 +1,17 @@
-from django.http.response import HttpResponse
-from django.shortcuts import render
+from celery import shared_task
 from yahoo_fin.stock_info import tickers_nifty50, get_quote_table
-import queue
 from threading import Thread
-
-# Create your views here.
-
-
-def stockpicker(request):
-    all_stocks = tickers_nifty50()
-    return render(request, 'mainapp/stockpicker.html', {'stocks': all_stocks})
+import queue
 
 
-def stocktracker(request):
-    stocks = request.GET.getlist("stockpicker")
+@shared_task(bind=True)
+def update_stock(self, stocks):
     all_stocks = tickers_nifty50()
     data = {}
 
     for i in stocks:
         if i not in all_stocks:
-            return HttpResponse("You have selected wrong stocks. do it again")
+            stocks.remove(i)
 
     n_threads = len(stocks)
     thread_list = []
@@ -37,8 +29,4 @@ def stocktracker(request):
         result = que.get()
         data.update(result)
 
-    # for i in stocks:
-    #     result = get_quote_table(i)
-    #     data.update({i: result})
-
-    return render(request, 'mainapp/stocktracker.html', {'data': data, 'room_name': 'track'})
+    return 'Done'
