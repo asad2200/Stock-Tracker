@@ -31,7 +31,7 @@
                 <td>{{key}}</td>
                 <td id="{{key}}_price">{{ value|get:"Quote Price"|floatformat:4}}</td>
                 <td id="{{key}}_oldprice">{{ value|get:"Previous Close"|floatformat:4}}</td>
-                <td>{{ value|get:"Open"}}</td>
+                <td id="{{key}}_open">{{ value|get:"Open"}}</td>
                 <td id="{{key}}_change">
                     <script>
                         var change = document.getElementById("{{key}}_price").innerHTML - document.getElementById("{{key}}_oldprice").innerHTML
@@ -48,8 +48,8 @@
                         }
                     </script>
                 </td>
-                <td>{{ value|get:"Market Cap"}}</td>
-                <td>{{ value|get:"Volume"}}</td>
+                <td id="{{key}}_cap">{{ value|get:"Market Cap"}}</td>
+                <td id="{{key}}_volume">{{ value|get:"Volume"}}</td>
             </tr>
             {% endfor %}
         </tbody>
