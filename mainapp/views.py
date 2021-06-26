@@ -1,3 +1,4 @@
+from asgiref.sync import sync_to_async
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from yahoo_fin.stock_info import tickers_nifty50, get_quote_table
@@ -12,7 +13,19 @@ def stockpicker(request):
     return render(request, 'mainapp/stockpicker.html', {'stocks': all_stocks})
 
 
-def stocktracker(request):
+@sync_to_async
+def check_authenticated(request):
+    if request.user.is_authenticated:
+        return False
+    else:
+        return True
+
+
+async def stocktracker(request):
+    logged_in = check_authenticated(request)
+    if not logged_in:
+        return HttpResponse("Login First")
+
     stocks = request.GET.getlist("stockpicker")
     all_stocks = tickers_nifty50()
     data = {}
